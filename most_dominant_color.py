@@ -3,8 +3,8 @@ import os
 import requests
 
 
-# Returns a list that contains the most dominant color on the album cover of each given track.
-# Index `i` in `tracks` corresponds to index `i` in `most_dominant_colors`.
+# Returns a list that contains the most dominant color in the album cover of each given track.
+# Index `i` in given list `tracks` corresponds to index `i` in the list `most_dominant_colors`.
 def find_most_dominant_color_per_track(tracks):
     most_dominant_colors = []
     temp_file = 'temp.jpg'
