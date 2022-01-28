@@ -1,8 +1,8 @@
 import configparser
 import sys
 
-from most_dominant_color import find_most_dominant_color_per_track
-from spotify import get_playlist
+from sort import sort_by_most_dominant_color
+from spotify import get_playlist_name, get_playlist_tracks, create_playlist
 
 import spotipy
 
@@ -15,15 +15,17 @@ if __name__ == '__main__':
     config = configparser.ConfigParser()
     config.read('secrets.ini')
 
-    auth_manager = spotipy.SpotifyClientCredentials(
+    auth_manager = spotipy.SpotifyOAuth(
         config['spotify']['CLIENT_ID'],
-        config['spotify']['CLIENT_SECRET']
+        config['spotify']['CLIENT_SECRET'],
+        config['spotify']['REDIRECT_URI'],
+        scope='playlist-modify-public'
     )
     client = spotipy.Spotify(auth_manager=auth_manager)
 
-    tracks = get_playlist(client, playlist_id)
-    most_dominant_colors = find_most_dominant_color_per_track(tracks)
+    name = get_playlist_name(client, playlist_id)
+    tracks = get_playlist_tracks(client, playlist_id)
+    tracks = sort_by_most_dominant_color(tracks)
 
-    # TODO: Sort zip(tracks, most_dominant_colors) according to the color value.
-
-    # TODO: Create new Spotify playlist.
+    track_ids = [track.id for track in tracks]
+    create_playlist(client, f'{name} - SORTED', track_ids)

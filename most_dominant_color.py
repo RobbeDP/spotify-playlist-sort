@@ -16,7 +16,7 @@ def find_most_dominant_color_per_track(tracks):
             file.write(response.content)
 
         color_thief = colorthief.ColorThief(temp_file)
-        most_dominant_colors.append(color_thief.get_color())
+        most_dominant_colors.append(color_thief.get_color(quality=1))
 
     # Remove the temporary file that has been created.
     os.remove(temp_file)
